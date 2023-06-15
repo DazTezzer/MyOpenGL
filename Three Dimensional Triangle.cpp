@@ -25,30 +25,47 @@ int draw_3d_triangle()
     const char* fragmentShaderSource = "#version 330 core\n"
         "out vec4 FragColor;\n"
         "in vec3 color;\n"
-        "uniform vec4 myColor;\n"
+        "uniform vec3 myColors[5];\n"
         "void main()\n"
         "{\n"
-        "   FragColor = myColor * vec4(color, 1.0);\n"
+        "   int index = gl_PrimitiveID % 3;\n"
+        "   FragColor = vec4(myColors[index], 1.0) * vec4(color, 1.0);\n"
         "}\n\0";
 
     GLfloat vertices[] =
     { //     COORDINATES     /        COLORS      //
-        -0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,
-        -0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
-         0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
-         0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,
-         0.0f, 1.0f,  0.0f,     0.92f, 0.86f, 0.76f
+    // Bottom face (red)
+    -0.5f, 0.0f,  0.5f,     1.0f, 0.0f, 0.0f,
+    -0.5f, 0.0f, -0.5f,     1.0f, 0.0f, 0.0f,
+    0.5f, 0.0f, -0.5f,     1.0f, 0.0f, 0.0f,
+    0.5f, 0.0f,  0.5f,     1.0f, 0.0f, 0.0f,
+    // Front face (green)
+    0.5f, 0.0f,  0.5f,     0.0f, 1.0f, 0.0f,
+    0.5f, 0.0f, -0.5f,     0.0f, 1.0f, 0.0f,
+    0.0f, 1.0f,  0.0f,     0.0f, 1.0f, 0.0f,
+    // Right face (blue)
+    0.5f, 0.0f, -0.5f,     0.0f, 0.0f, 1.0f,
+    -0.5f, 0.0f, -0.5f,     0.0f, 0.0f, 1.0f,
+    0.0f, 1.0f,  0.0f,     0.0f, 0.0f, 1.0f,
+    // Back face (yellow)
+    -0.5f, 0.0f, -0.5f,     1.0f, 1.0f, 0.0f,
+    -0.5f, 0.0f,  0.5f,     1.0f, 1.0f, 0.0f,
+    0.0f, 1.0f,  0.0f,     1.0f, 1.0f, 0.0f,
+    // Left face (purple)
+    -0.5f, 0.0f,  0.5f,     1.0f, 0.0f, 1.0f,
+    0.5f, 0.0f,  0.5f,     1.0f, 0.0f, 1.0f,
+    0.0f, 1.0f,  0.0f,     1.0f, 0.0f, 1.0f,
     };
 
     // Indices for vertices order
     GLuint indices[] =
     {
-        0, 1, 2,
-        0, 2, 3,
-        0, 1, 4,
-        1, 2, 4,
-        2, 3, 4,
-        3, 0, 4
+    0, 1, 2, // Bottom face
+    0, 2, 3,
+    4, 5, 6, // Front face
+    7, 8, 9, // Right face
+    10, 11, 12, // Back face
+    13, 14, 15 // Left face
     };
 
 
@@ -114,7 +131,12 @@ int draw_3d_triangle()
 
         GLuint uniID = glGetUniformLocation(shaderProgram, "scale");
 
-
+        glm::vec3 red(1.0f, 0.0f, 0.0f);
+        glm::vec3 green(0.0f, 1.0f, 0.0f);
+        glm::vec3 blue(0.0f, 0.0f, 1.0f);
+        glm::vec3 yellow(1.0f, 1.0f, 0.0f);
+        glm::vec3 purple(1.0f, 0.0f, 1.0f);
+        glm::vec3 myColors[] = { red, green, blue, yellow, purple};
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glfwSwapBuffers(window);
@@ -149,6 +171,9 @@ int draw_3d_triangle()
             glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
             glUniform1f(uniID, 0.5f);
+
+            int myColorsLoc = glGetUniformLocation(shaderProgram, "myColors");
+            glUniform3fv(myColorsLoc, 5, glm::value_ptr(myColors[0]));
 
             glBindVertexArray(VAO);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indi);
