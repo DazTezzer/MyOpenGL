@@ -71,18 +71,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\include;$(MyIncludeDir);$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\include;$(MyIncludeDir);$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);$MyIncludeDir=$(ProjectDir)Labraris\include</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -112,7 +112,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);$MyIncludeDir=$(ProjectDir)Labraris\include</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\tezze\Desktop\OpenGL\MyOpenGL\Labraris\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
