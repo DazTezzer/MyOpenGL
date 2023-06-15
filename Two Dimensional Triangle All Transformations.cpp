@@ -28,11 +28,20 @@ int draw_all_2d_transformations()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLfloat vertices[] = {
-    -0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-     0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-     0.0f,  0.5f * float(sqrt(3)) * 2  / 3, 0.0f
+    GLfloat vertices_rotate[] = {
+    -0.2f, -0.2f * float(sqrt(3)) / 3, 0.0f,
+     0.2f, -0.2f * float(sqrt(3)) / 3, 0.0f,
+     0.0f,  0.2f * float(sqrt(3)) * 2  / 3, 0.0f
     };
+
+	GLfloat vertices_scale[] = {
+	//-1.2f, -0.2f * float(sqrt(3)) / 3, 0.0f,
+	//-0.8f, -0.2f * float(sqrt(3)) / 3, 0.0f,
+	//-1.0f,  0.2f * float(sqrt(3)) * 2 / 3, 0.0f
+	-0.2f, -1.2f * float(sqrt(3)) / 3, 0.0f,
+	 0.2f, -1.2f * float(sqrt(3)) / 3, 0.0f,
+	 0.0f, -0.2f * float(sqrt(3)) * 2 / 3, 0.0f
+	};
 
 	GLFWwindow* window = glfwCreateWindow(1920, 1080, "MyOpenGL", NULL, NULL);
 	if (window == NULL)
@@ -70,7 +79,7 @@ int draw_all_2d_transformations()
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_rotate), vertices_rotate, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -79,13 +88,31 @@ int draw_all_2d_transformations()
     glBindVertexArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+
+	GLuint VBO1, VAO1;
+	glGenVertexArrays(1, &VAO1);
+	glGenBuffers(1, &VBO1);
+	glBindVertexArray(VAO1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_scale), vertices_scale, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
 
-	glm::mat4 transform = glm::mat4(1.0f);
-	transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-
+	glm::mat4 transform_rotate = glm::mat4(1.0f);
+	glm::mat4 transform_scale = glm::mat4(1.0f);
+	float size = 0.5f;
+	bool check = false;
+	float targetSize = 1.3f;
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -93,14 +120,39 @@ int draw_all_2d_transformations()
 		glUseProgram(shaderProgram);
 
 		float angle = glfwGetTime() * glm::radians(15.0f);
-		transform = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 0.0f, 1.0f));
+		transform_rotate = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUseProgram(shaderProgram);
-		unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+		unsigned int transformLoc1 = glGetUniformLocation(shaderProgram, "transform");
+		glUniformMatrix4fv(transformLoc1, 1, GL_FALSE, glm::value_ptr(transform_rotate));
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
 		
+		if ((size < targetSize) && (check == false))
+		{
+			size += 0.001f;
+		}
+		else if ((size > targetSize) && (check == true))
+		{
+			size -= 0.001f;
+		}
+		else
+		{
+			check = !check;
+			targetSize = check ? 0.5f : 1.3f;
+		}
+		transform_scale = glm::scale(glm::mat4(1.0f), glm::vec3(size));
+		glm::vec3 translationVector = glm::vec3(0.5f, size, 0.0f);
+		glm::mat4 transform_translate = glm::translate(glm::mat4(1.0f), translationVector);
+		glm::mat4 finalTransformMatrix = transform_translate * transform_scale;
+
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, glm::value_ptr(finalTransformMatrix));
+		glUseProgram(shaderProgram);
+
+		glBindVertexArray(VAO1);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
