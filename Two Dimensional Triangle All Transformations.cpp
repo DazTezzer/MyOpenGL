@@ -122,6 +122,8 @@ int draw_all_2d_transformations()
 	bool check = false;
 	float targetSize = 1.3f;
 	float offset = 0.5f;
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);

@@ -143,11 +143,13 @@ int draw_3d_triangle()
 
         float rotation = 0.0f;
         double prevTime = glfwGetTime();
+
+        glEnable(GL_DEPTH_TEST);
         
         while (!glfwWindowShouldClose(window))
         {
             glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glUseProgram(shaderProgram);
             double crntTime = glfwGetTime();
             if (crntTime - prevTime >= 1 / 60)
