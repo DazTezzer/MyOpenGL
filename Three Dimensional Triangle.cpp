@@ -82,7 +82,7 @@ int draw_3d_triangle()
 
     gladLoadGL();
 
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 1920, 1080);
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
