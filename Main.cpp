@@ -12,5 +12,5 @@ int main()
 	draw_two_triangle();
 	draw_all_2d_transformations();
 	draw_3d_triangle();
-	return 0;
+	return 0; 
 }
