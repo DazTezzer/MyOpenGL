@@ -139,7 +139,7 @@ int draw_3d_triangle_mouse()
 
     int numColors = sizeof(myColors) / sizeof(myColors[0]);
 
-    glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
 
@@ -159,7 +159,7 @@ int draw_3d_triangle_mouse()
 
     while (!glfwWindowShouldClose(window))
     {
-        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glUseProgram(shaderProgram);
         

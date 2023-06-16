@@ -5,4 +5,5 @@ int draw_two_triangle();
 int draw_3d_triangle();
 int draw_all_2d_transformations();
 int draw_3d_triangle_mouse();
+int project();
 #endif

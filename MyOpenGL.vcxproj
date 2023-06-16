@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Project.cpp" />
     <ClCompile Include="Three Dimensional Triangle mouse move.cpp" />
     <ClCompile Include="Three Dimensional Triangle.cpp" />
     <ClCompile Include="Two Dimensional Triangle All Transformations.cpp" />
