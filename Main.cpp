@@ -12,5 +12,6 @@ int main()
 	draw_two_triangle();
 	draw_all_2d_transformations();
 	draw_3d_triangle();
+	draw_3d_triangle_mouse();
 	return 0; 
 }
